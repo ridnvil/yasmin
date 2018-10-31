@@ -54,7 +54,11 @@ class _chalangeHomeState extends State<chalangeHome> {
               ],
             ),
             Container(
-              child: new Text('Welcome'),
+              child: Column(
+                children: <Widget>[
+                  Text('Welcome to Chalange Mode')
+                ],
+              ),
             ),
           ],
         ),
