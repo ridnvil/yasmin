@@ -5,7 +5,6 @@ import 'package:yasmin/ui_base/main_layout.dart';
 /**
  STANDARD GRADIENT THEME
  #83a4d4 -> #b6fbff
-    test
  */
 
 void main() {
