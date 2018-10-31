@@ -28,9 +28,12 @@ class _MainLayoutState extends State<MainLayout>{
     print('Page Refresh');
   }
 
+  GlobalKey<ScaffoldState> _drawer = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _drawer,
       drawer: Opacity(
         opacity: 0.8,
         child: Drawer(
@@ -65,7 +68,7 @@ class _MainLayoutState extends State<MainLayout>{
                       backgroundColor: Colors.transparent,
                       leading: IconButton(
                         icon: Icon(Icons.sort),
-                        onPressed: () {},
+                        onPressed: () => _drawer.currentState.openDrawer(),
                       ),
                       title: Center(child: Text('PTMSI')),
                       actions: <Widget>[
@@ -100,7 +103,7 @@ class _MainLayoutState extends State<MainLayout>{
                         Padding(padding: EdgeInsets.only(bottom: 18.0)),
                         Text('Hello, User',
                             style:
-                                TextStyle(fontSize: 28.0, color: Colors.white)),
+                            TextStyle(fontSize: 28.0, color: Colors.white)),
                         Text(
                           'Birtdate : dd-mm-yyyy',
                           style: TextStyle(fontSize: 15.0, color: Colors.white),

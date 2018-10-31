@@ -304,8 +304,9 @@ class _drawerMenuState extends State<drawerMenu> {
                         ],
                       ),
                       onPressed: () {
-                        chalangeHome();
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => chalangeHome()));
                       },
                     ),
                     FlatButton(

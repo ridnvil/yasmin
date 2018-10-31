@@ -17,7 +17,7 @@ class _chalangeHomeState extends State<chalangeHome> {
               backgroundColor: Colors.transparent,
               leading: IconButton(
                 icon: Icon(Icons.sort),
-                onPressed: () {},
+                onPressed: () => Navigator.pop(context),
               ),
               title: Center(child: Text('CHALANGE')),
               actions: <Widget>[
