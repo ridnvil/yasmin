@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yasmin/ui_base/components/event_card.dart';
 
 class chalangeHome extends StatefulWidget {
   @override
@@ -6,10 +7,32 @@ class chalangeHome extends StatefulWidget {
 }
 
 class _chalangeHomeState extends State<chalangeHome> {
+  GlobalKey<ScaffoldState> _drawer = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _drawer,
+      drawer: Opacity(
+        opacity: 0.8,
+        child: Drawer(
+          elevation: 10.0,
+          child: drawerMenu(),
+        ),
+      ),
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment(
+                0.8, 1.2), // 10% of the width, so there are ten blinds.
+            colors: [
+              const Color(0xFF08AEEA),
+              const Color(0xFF2AF598),
+            ], // whitish to gray
+            tileMode: TileMode.mirror, // repeats the gradient over the canvas
+          ),
+        ),
         child: ListView(
           children: <Widget>[
             AppBar(
@@ -17,14 +40,14 @@ class _chalangeHomeState extends State<chalangeHome> {
               backgroundColor: Colors.transparent,
               leading: IconButton(
                 icon: Icon(Icons.sort),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => _drawer.currentState.openDrawer(),
               ),
               title: Center(child: Text('CHALANGE')),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.search),
+                  icon: Icon(Icons.close),
                   onPressed: () {
-
+                    Navigator.pop(context);
                   },
                 ),
                 Padding(padding: EdgeInsets.only(right: 4.0))
