@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:yasmin/menu/chalange.dart';
 import 'package:yasmin/menu/profile.dart';
+import 'package:yasmin/menu/scedule.dart';
 import 'dart:async';
-import 'dart:math';
+
+import 'package:yasmin/menu/timer_page.dart';
 
 class EventCard extends StatefulWidget {
   @override
@@ -306,8 +308,31 @@ class _drawerMenuState extends State<drawerMenu> {
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => chalangeHome()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => chalangeHome()));
+                      },
+                    ),
+                    FlatButton(
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 40.0, top: 10.0, bottom: 10.0),
+                            child: Icon(Icons.date_range, color: Colors.white),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Text('Scedules',
+                                style: TextStyle(color: Colors.white)),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => scedule()));
                       },
                     ),
                     FlatButton(
@@ -431,6 +456,107 @@ class _listPlayerState extends State<listPlayer> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ElapsedTime {
+  final int hundreds;
+  final int seconds;
+  final int minutes;
+
+  ElapsedTime({
+    this.hundreds,
+    this.seconds,
+    this.minutes,
+  });
+}
+
+class Dependencies {
+  final List<ValueChanged<ElapsedTime>> timerListeners =
+  <ValueChanged<ElapsedTime>>[];
+  final TextStyle textStyle = const TextStyle(fontSize: 50.0);
+  final Stopwatch stopwatch = new Stopwatch();
+  final int timerMillisecondsRefreshRate = 30;
+}
+
+class bettleChalane extends StatefulWidget {
+  bettleChalane({Key key}) : super(key: key);
+
+  @override
+  _bettleChalaneState createState() => _bettleChalaneState();
+}
+
+class _bettleChalaneState extends State<bettleChalane> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Material(
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CircleAvatar(
+                          maxRadius: 35.0,
+                          backgroundImage: NetworkImage(
+                              'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
+                          backgroundColor: Colors.blue,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Atlet Names',
+                            style: TextStyle(color: Colors.white)),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Text(
+                            'VS',
+                            style:
+                            TextStyle(fontSize: 30.0, color: Colors.white),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CircleAvatar(
+                          maxRadius: 35.0,
+                          backgroundImage: NetworkImage(
+                              'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
+                          backgroundColor: Colors.blue,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Atlet Names',
+                            style: TextStyle(color: Colors.white)),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

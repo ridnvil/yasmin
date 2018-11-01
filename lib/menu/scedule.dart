@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:yasmin/menu/timer_page.dart';
 import 'package:yasmin/ui_base/components/event_card.dart';
 
-class chalangeHome extends StatefulWidget {
+class scedule extends StatefulWidget {
   @override
-  _chalangeHomeState createState() => _chalangeHomeState();
+  _sceduleState createState() => _sceduleState();
 }
 
-class _chalangeHomeState extends State<chalangeHome> {
+class _sceduleState extends State<scedule> {
   GlobalKey<ScaffoldState> _drawer = new GlobalKey<ScaffoldState>();
 
   @override
@@ -43,7 +42,7 @@ class _chalangeHomeState extends State<chalangeHome> {
                 icon: Icon(Icons.sort),
                 onPressed: () => _drawer.currentState.openDrawer(),
               ),
-              title: Center(child: Text('CHALANGE')),
+              title: Center(child: Text('SCEDULES')),
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.close),
@@ -55,11 +54,8 @@ class _chalangeHomeState extends State<chalangeHome> {
               ],
             ),
             Container(
-              padding: EdgeInsets.only(top: 20.0),
               child: Column(
-                children: <Widget>[
-                  bettleChalane(),
-                ],
+                children: <Widget>[Text('Welcome to Scedule Mode')],
               ),
             ),
           ],

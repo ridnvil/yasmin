@@ -42,7 +42,7 @@ class _profileState extends State<profile> {
                 icon: Icon(Icons.sort),
                 onPressed: () => _drawer.currentState.openDrawer(),
               ),
-              title: Center(child: Text('CHALANGE')),
+              title: Center(child: Text('PROFILE')),
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.close),
@@ -55,7 +55,7 @@ class _profileState extends State<profile> {
             ),
             Container(
               child: Column(
-                children: <Widget>[Text('Welcome to Chalange Mode')],
+                children: <Widget>[Text('Welcome to Profile Mode')],
               ),
             ),
           ],
