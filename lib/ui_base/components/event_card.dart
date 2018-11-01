@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:yasmin/menu/chalange.dart';
+import 'package:yasmin/menu/profile.dart';
 import 'dart:async';
 import 'dart:math';
 
@@ -325,7 +326,9 @@ class _drawerMenuState extends State<drawerMenu> {
                         ],
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => profile()));
                       },
                     ),
                     Divider(
