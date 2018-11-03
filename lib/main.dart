@@ -11,7 +11,7 @@ void main() {
   runApp(MaterialApp(
     title: "PTMSI",
     debugShowCheckedModeBanner: false,
-    home: MainLayout(),
+    home: LoginLayout(),
     initialRoute: '/',
     routes: {
       MainLayout.tag: (ctx) => MainLayout(),
