@@ -90,10 +90,12 @@ class _dialogShowState extends State<dialogShow>
     super.initState();
     animationController =
         AnimationController(duration: Duration(seconds: 2), vsync: this);
-    animation = Tween(begin: 200.0, end: 2000.0).animate(animationController)
-      ..addListener(() {
-        setState(() {});
-      });
+    animation =
+    new CurvedAnimation(parent: animationController, curve: Curves.bounceOut);
+    animation.addListener(() {
+      this.setState(() {});
+    });
+    animation.addStatusListener((AnimationStatus status) {});
     animationController.forward();
   }
 
@@ -101,13 +103,11 @@ class _dialogShowState extends State<dialogShow>
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: animation.value,
-        width: animation.value,
         child: new AlertDialog(
           title: new Text('Title Article'),
           content: Container(
-            height: animation.value,
-            width: animation.value,
+            height: animation.value * 350.0,
+            //width: animation.value,
             child: ListView(
               children: <Widget>[
                 Column(

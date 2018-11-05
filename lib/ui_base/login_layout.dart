@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../ui_base/components/login.dart';
 
 class LoginLayout extends StatefulWidget {
   static final String tag = "/LOGIN_LAYOUT";
@@ -22,14 +23,13 @@ class _LoginLayoutState extends State<LoginLayout> {
         fit: StackFit.expand,
         children: <Widget>[
           new Image(
-            image: new AssetImage("assets/bg.jpg"),
+            image: new AssetImage("assets/bg3.jpg"),
             fit: BoxFit.cover,
             color: Colors.black54,
             colorBlendMode: BlendMode.darken,
           ),
-          new Column(
-            children: <Widget>[
-            ],
+          new Center(
+            child: Login(),
           ),
         ],
       ),
