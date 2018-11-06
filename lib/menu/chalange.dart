@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yasmin/menu/timer_page.dart';
 import 'package:yasmin/ui_base/components/event_card.dart';
+import 'package:yasmin/ui_base/components/chalangeContent.dart';
 
 class chalangeHome extends StatefulWidget {
   @override
