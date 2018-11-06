@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:yasmin/menu/timer_page.dart';
 import 'package:yasmin/ui_base/components/event_card.dart';
 
-class chalangeHome extends StatefulWidget {
+class tableStandingClub extends StatefulWidget {
   @override
-  _chalangeHomeState createState() => _chalangeHomeState();
+  _tableStandingClubState createState() => _tableStandingClubState();
 }
 
-class _chalangeHomeState extends State<chalangeHome> {
+class _tableStandingClubState extends State<tableStandingClub> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,14 +26,12 @@ class _chalangeHomeState extends State<chalangeHome> {
                 AppBar(
                   elevation: 0.0,
                   backgroundColor: Colors.transparent,
-                  title: Text('CHALANGE'),
+                  title: Text('TABLE CLUB'),
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 20.0),
                   child: Column(
-                    children: <Widget>[
-                      bettleChalane(),
-                    ],
+                    children: <Widget>[],
                   ),
                 ),
               ],

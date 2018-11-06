@@ -9,7 +9,7 @@ class MainLayout extends StatefulWidget {
   _MainLayoutState createState() => _MainLayoutState();
 }
 
-class _MainLayoutState extends State<MainLayout>{
+class _MainLayoutState extends State<MainLayout> {
   final _date = formatDate(new DateTime.now(), [
     dd,
     ' ',
@@ -18,7 +18,7 @@ class _MainLayoutState extends State<MainLayout>{
     yyyy,
   ]);
 
-  final List<String> titlearticle = ['one', 'two', 'three', 'four'];
+  final List<String> titlearticle = ['one', 'two', 'three'];
 
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
@@ -48,108 +48,125 @@ class _MainLayoutState extends State<MainLayout>{
             end: Alignment(
                 0.8, 1.2), // 10% of the width, so there are ten blinds.
             colors: [
-              const Color(0xFF08AEEA),
-              const Color(0xFF2AF598),
+              const Color(0xFF141E30),
+              const Color(0xFF243B55),
             ], // whitish to gray
             tileMode: TileMode.mirror, // repeats the gradient over the canvas
           ),
         ),
-        child: RefreshIndicator(
-          notificationPredicate: defaultScrollNotificationPredicate,
-          child: ListView(
+        child: Stack(
+            fit: StackFit.expand,
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 80.0,
-                    child: AppBar(
-                      elevation: 0.0,
-                      backgroundColor: Colors.transparent,
-                      leading: IconButton(
-                        icon: Icon(Icons.sort),
-                        onPressed: () => _drawer.currentState.openDrawer(),
-                      ),
-                      title: Center(child: Text('PTMSI')),
-                      actions: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.search),
-                          onPressed: () {
-                            print(formatDate(
-                                new DateTime.now(), [dd, '-', M, '-', yyyy]));
-                          },
-                        ),
-                        Padding(padding: EdgeInsets.only(right: 4.0))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 50.0, bottom: 20.0),
-                    child: Column(
+              new Image(
+                image: new AssetImage("assets/bg3.jpg"),
+                fit: BoxFit.cover,
+                color: Colors.black54,
+                colorBlendMode: BlendMode.darken,
+              ),
+              RefreshIndicator(
+                notificationPredicate: defaultScrollNotificationPredicate,
+                child: ListView(
+                  children: <Widget>[
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        IconButton(
-                          padding: EdgeInsets.all(0.0),
-                          iconSize: 50.0,
-                          icon: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            backgroundImage: NetworkImage(
-                                'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
+                        Container(
+                          height: 80.0,
+                          child: AppBar(
+                            elevation: 0.0,
+                            backgroundColor: Colors.transparent,
+                            leading: IconButton(
+                              icon: Icon(Icons.sort),
+                              onPressed: () =>
+                                  _drawer.currentState.openDrawer(),
+                            ),
+                            title: Center(child: Text('PTMSI')),
+                            actions: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.search),
+                                onPressed: () {
+                                  print(formatDate(
+                                      new DateTime.now(),
+                                      [dd, '-', M, '-', yyyy]));
+                                },
+                              ),
+                              Padding(padding: EdgeInsets.only(right: 4.0))
+                            ],
                           ),
-                          onPressed: (){
-                            print('Icon Button');
-                          },
-                        ),
-                        Padding(padding: EdgeInsets.only(bottom: 18.0)),
-                        Text('Hello, User',
-                            style:
-                            TextStyle(fontSize: 28.0, color: Colors.white)),
-                        Text(
-                          'Birtdate : dd-mm-yyyy',
-                          style: TextStyle(fontSize: 15.0, color: Colors.white),
-                        ),
-                        Text(
-                          'DNM : 280',
-                          style: TextStyle(fontSize: 15.0, color: Colors.white),
-                        ),
-                        Text(
-                          'RING : 2',
-                          style: TextStyle(fontSize: 15.0, color: Colors.white),
                         ),
                         Container(
-                            padding: EdgeInsets.only(top: 10.0),
+                          padding: EdgeInsets.only(left: 50.0, bottom: 20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              IconButton(
+                                padding: EdgeInsets.all(0.0),
+                                iconSize: 50.0,
+                                icon: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(
+                                      'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
+                                ),
+                                onPressed: () {
+                                  print('Icon Button');
+                                },
+                              ),
+                              Padding(padding: EdgeInsets.only(bottom: 18.0)),
+                              Text('Hello, User',
+                                  style: TextStyle(
+                                      fontSize: 28.0, color: Colors.white)),
+                              Text(
+                                'Birtdate : dd-mm-yyyy',
+                                style:
+                                TextStyle(fontSize: 15.0, color: Colors.white),
+                              ),
+                              Text(
+                                'DNM : 280',
+                                style:
+                                TextStyle(fontSize: 15.0, color: Colors.white),
+                              ),
+                              Text(
+                                'RING : 2',
+                                style:
+                                TextStyle(fontSize: 15.0, color: Colors.white),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.only(top: 10.0),
+                                  child: Text(
+                                    '',
+                                    style: TextStyle(
+                                        fontSize: 15.0, color: Colors.white),
+                                  )),
+                              reportCard()
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 300.0,
+                          child: ListView.builder(
+                            padding: EdgeInsets.only(left: 16.0),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: titlearticle.length,
+                            itemBuilder: (context, index) {
+                              return EventCard();
+                            },
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(
+                                top: 10.0, left: 20.0, bottom: 20.0),
                             child: Text(
-                              '',
+                              'Today ${_date}',
                               style: TextStyle(
-                                  fontSize: 15.0, color: Colors.white),
-                            )),
-                        reportCard()
+                                  fontSize: 20.0, color: Colors.white),
+                            ))
                       ],
                     ),
-                  ),
-                  Container(
-                    height: 380.0,
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(left: 16.0),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: titlearticle.length,
-                      itemBuilder: (context, index) {
-                        return EventCard();
-                      },
-                    ),
-                  ),
-                  Container(
-                      padding: EdgeInsets.only(top: 10.0, left: 20.0, bottom: 20.0),
-                      child: Text(
-                        'Today ${_date}',
-                        style: TextStyle(fontSize: 20.0, color: Colors.white),
-                      ))
-                ],
+                  ],
+                ),
+                onRefresh: refreshPage,
               ),
-            ],
-          ),
-          onRefresh: refreshPage,
-        ),
+            ]),
       ),
     );
   }

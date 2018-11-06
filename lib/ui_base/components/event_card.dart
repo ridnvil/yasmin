@@ -3,6 +3,8 @@ import 'package:date_format/date_format.dart';
 import 'package:yasmin/menu/chalange.dart';
 import 'package:yasmin/menu/profile.dart';
 import 'package:yasmin/menu/scedule.dart';
+import 'package:yasmin/menu/tablestanding.dart';
+import 'package:yasmin/menu/tablestandingclub.dart';
 import 'dart:async';
 
 import 'package:yasmin/menu/timer_page.dart';
@@ -18,8 +20,8 @@ class _EventCardState extends State<EventCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
-      width: 350.0,
+      //padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
+      width: 250.0,
       child: FlatButton(
         padding: EdgeInsets.all(5.0),
         child: Material(
@@ -34,14 +36,14 @@ class _EventCardState extends State<EventCard> {
                     topLeft: Radius.circular(8.0),
                     topRight: Radius.circular(8.0),
                   ),
-                  child: Image.network(
-                    'http://a.espncdn.com/combiner/i?img=/photo/2015/0305/espnw_wang_d1_800x450.jpg&w=800',
+                  child: Image.asset(
+                    'assets/bg3.jpg',
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 16.0, top: 16.0, bottom: 24.0),
+                padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -90,8 +92,8 @@ class _dialogShowState extends State<dialogShow>
     super.initState();
     animationController =
         AnimationController(duration: Duration(seconds: 2), vsync: this);
-    animation =
-    new CurvedAnimation(parent: animationController, curve: Curves.bounceOut);
+    animation = new CurvedAnimation(
+        parent: animationController, curve: Curves.bounceOut);
     animation.addListener(() {
       this.setState(() {});
     });
@@ -227,8 +229,8 @@ class _drawerMenuState extends State<drawerMenu> {
           end:
               Alignment(0.8, 1.2), // 10% of the width, so there are ten blinds.
           colors: [
-            const Color(0xFF08AEEA),
-            const Color(0xFFB2FEFA),
+            const Color(0xFF141E30),
+            const Color(0xFF243B55),
           ], // whitish to gray
           tileMode: TileMode.mirror, // repeats the gradient over the canvas
         ),
@@ -361,35 +363,54 @@ class _drawerMenuState extends State<drawerMenu> {
                     ),
                     Column(
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text('Table Standing',
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                          ],
+                        GestureDetector(
+                          child: Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text('National Standing Table',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => tableStanding()));
+                          },
                         ),
                         Divider(
                           color: Colors.white,
                         ),
                         Container(
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, right: 10.0),
-                                child: Text('Player Name',
-                                    style: TextStyle(color: Colors.white)),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 150.0, right: 10.0),
-                                child: Text('Point',
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(color: Colors.white)),
-                              ),
-                            ],
+                          child: GestureDetector(
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0),
+                                  child: Text('Player Name',
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 150.0, right: 10.0),
+                                  child: Text('Point',
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          tableStandingClub()));
+                            },
                           ),
                         ),
                         Divider(

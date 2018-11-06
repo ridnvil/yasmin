@@ -14,8 +14,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   bool btnState = false;
   bool login = false;
 
-  String email = "";
-  String pass = "";
+  final textEmail = new TextEditingController();
+  final textPass = new TextEditingController();
 
   @override
   void initState() {
@@ -31,12 +31,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       print("TESTING $status");
       if (status == AnimationStatus.completed) {
         btnState = true;
-        email = "admin";
-        pass = "admin";
-
-        if (email == "admin" && pass == "admin") {
-          login = true;
-        }
       }
     });
     controller.forward();
@@ -59,16 +53,32 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         children: <Widget>[
           Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              controller: textEmail,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(contentPadding: EdgeInsets.all(10.0),
                   hintText: 'Email',
-                  hintStyle: TextStyle(color: Colors.white30)),
+                hintStyle: TextStyle(color: Colors.white30),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0)),
+              ),
             ),
           ),
           Expanded(
             child: TextField(
+              controller: textPass,
+              obscureText: true,
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
                   hintText: 'Passwords',
-                  hintStyle: TextStyle(color: Colors.white30)),
+                  hintStyle: TextStyle(color: Colors.white30),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide(width: 2.0,
+                          style: BorderStyle.solid,
+                          color: Colors.white))
+              ),
+
             ),
           ),
           Container(
@@ -104,8 +114,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed(MainLayout.tag);
+                              if (textEmail.text == 'admin' &&
+                                  textPass.text == 'admin') {
+                                Navigator.of(context).pushReplacementNamed(
+                                    MainLayout.tag);
+                              } else {
+                                print('Login Filed!');
+                              }
+                              //Navigator.of(context).pushReplacementNamed(MainLayout.tag);
                             },
                           )
                         : Container(),
