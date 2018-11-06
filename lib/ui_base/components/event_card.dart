@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'package:yasmin/menu/article.dart';
 import 'package:yasmin/menu/chalange.dart';
 import 'package:yasmin/menu/profile.dart';
 import 'package:yasmin/menu/scedule.dart';
@@ -70,74 +71,9 @@ class _EventCardState extends State<EventCard> {
           ),
         ),
         onPressed: () {
-          showDialog(context: context, child: dialogShow());
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => articleView()));
         },
-      ),
-    );
-  }
-}
-
-class dialogShow extends StatefulWidget {
-  @override
-  _dialogShowState createState() => _dialogShowState();
-}
-
-class _dialogShowState extends State<dialogShow>
-    with SingleTickerProviderStateMixin {
-  Animation animation;
-  AnimationController animationController;
-
-  @override
-  void initState() {
-    super.initState();
-    animationController =
-        AnimationController(duration: Duration(seconds: 2), vsync: this);
-    animation = new CurvedAnimation(
-        parent: animationController, curve: Curves.bounceOut);
-    animation.addListener(() {
-      this.setState(() {});
-    });
-    animation.addStatusListener((AnimationStatus status) {});
-    animationController.forward();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: new AlertDialog(
-          title: new Text('Title Article'),
-          content: Container(
-            height: animation.value * 350.0,
-            //width: animation.value,
-            child: ListView(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    new Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/7/79/Competitive_table_tennis.jpg',
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: new Text(
-                        'Suasana permainan tenis mejaTenis meja, atau ping pong (sebuah merek dagang), adalah suatu olahraga raket yang dimainkan oleh dua orang (untuk tunggal) atau dua pasangan (untuk ganda) yang berlawanan. Di Republik Rakyat Tiongkok, nama resmi olahraga ini ialah "bola ping pong" (Tionghoa : 乒乓球; Pinyin : pīngpāng qiú). Permainan ini menggunakan raket yang terbuat dari papan kayu yang dilapisi karet yang biasa disebut bet, sebuah bola pingpong dan lapangan permainan yang berbentuk meja. Induk Olahraga tenis meja di Indonesia adalah PTMSI (Persatuan Tenis Meja Seluruh Indonesia)[1] dan di dunia adalah ITTF (International Table Tennis Federation) yang anggotanya mencapai 217 negara dan PTMSI tercatat sebagai Anggota ITTF sejak tahun 1961.[2]',
-                        style: TextStyle(fontSize: 15.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: new Text('Close'),
-            ),
-          ],
-        ),
       ),
     );
   }
