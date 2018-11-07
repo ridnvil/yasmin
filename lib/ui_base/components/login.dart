@@ -18,26 +18,51 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       color: Colors.black26,
       height: 60.0,
       width: 300.0,
-      child: FlatButton(
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 8.0, bottom: 8.0, left: 0.0, right: 73.0),
-              child: new Image.asset('assets/Google-G.png'),
+      child: Column(
+        children: <Widget>[
+          FlatButton(
+            color: Colors.white,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 8.0, left: 0.0, right: 73.0),
+                  child: new Image.asset('assets/Google-G.png'),
+                ),
+                new Text(
+                  'GOOGLE',
+                  style: TextStyle(color: Colors.black54, fontSize: 12.0),
+                ),
+              ],
             ),
-            new Text(
-              'GOOGLE',
-              style: TextStyle(color: Colors.black54, fontSize: 12.0),
+            onPressed: () {
+              Authentiction auth = new Authentiction();
+              auth.signIn().then((FirebaseUser user) =>
+                  Navigator.of(context).pushReplacementNamed(MainLayout.tag));
+            },
+          ),
+          FlatButton(
+            color: Colors.blue,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 8.0, left: 0.0, right: 73.0),
+                  child: new Image.asset('assets/fb.png'),
+                ),
+                new Text(
+                  'FACEBOOK',
+                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                ),
+              ],
             ),
-          ],
-        ),
-        onPressed: () {
-          Authentiction auth = new Authentiction();
-          auth.signIn().then((FirebaseUser user) =>
-              Navigator.of(context).pushReplacementNamed(MainLayout.tag));
-        },
+            onPressed: () {
+              Authentiction auth = new Authentiction();
+              auth.signIn().then((FirebaseUser user) =>
+                  Navigator.of(context).pushReplacementNamed(MainLayout.tag));
+            },
+          ),
+        ],
       ),
     );
   }

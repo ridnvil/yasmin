@@ -22,6 +22,7 @@ dependencies:
   date_format: ^1.0.5
   firebase_auth:
   google_sign_in:
+  flutter_facebook_login:
 
 
 dev_dependencies:
@@ -42,6 +43,7 @@ flutter:
     - assets/bg3.jpg
     - assets/profile.png
     - assets/Google-G.png
+    - assets/fb.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
