@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:yasmin/menu/article.dart';
 import 'package:yasmin/menu/chalange.dart';
+import 'package:yasmin/menu/database.dart';
 import 'package:yasmin/menu/profile.dart';
 import 'package:yasmin/menu/scedule.dart';
 import 'package:yasmin/menu/tablestanding.dart';
@@ -9,6 +11,7 @@ import 'package:yasmin/menu/tablestandingclub.dart';
 import 'dart:async';
 
 import 'package:yasmin/menu/timer_page.dart';
+import 'package:yasmin/ui_base/components/login.dart';
 
 class EventCard extends StatefulWidget {
   @override
@@ -151,11 +154,19 @@ class _reportCardState extends State<reportCard> {
 }
 
 class drawerMenu extends StatefulWidget {
+  final String displayName, photoUrl;
+
+  const drawerMenu(
+      {Key key, @required this.displayName = 'Rid Nvil', this.photoUrl = ''})
+      : super(key: key);
+
   @override
   _drawerMenuState createState() => _drawerMenuState();
 }
 
 class _drawerMenuState extends State<drawerMenu> {
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -163,7 +174,7 @@ class _drawerMenuState extends State<drawerMenu> {
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
           end:
-              Alignment(0.8, 1.2), // 10% of the width, so there are ten blinds.
+          Alignment(0.8, 1.2), // 10% of the width, so there are ten blinds.
           colors: [
             const Color(0xFF141E30),
             const Color(0xFF243B55),
@@ -180,30 +191,31 @@ class _drawerMenuState extends State<drawerMenu> {
                 Divider(
                   color: Colors.white,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 0.0),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(10.0),
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
-                          backgroundColor: Colors.white,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Text('Profile Name',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 15.0)),
-                        )
-                      ],
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                    child: FlatButton(
+                      padding: EdgeInsets.all(10.0),
+                      child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(widget.photoUrl),
+                            backgroundColor: Colors.white,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Text(widget.displayName,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15.0)),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => profile()));
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => profile()));
-                    },
                   ),
                 ),
                 Divider(
@@ -384,7 +396,7 @@ class _listPlayerState extends State<listPlayer> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 15.0),
                 child:
-                    Text('Atlet Name', style: TextStyle(color: Colors.white)),
+                Text('Atlet Name', style: TextStyle(color: Colors.white)),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 100.0, right: 10.0),

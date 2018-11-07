@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yasmin/ui_base/components/event_card.dart';
 import '../main_layout.dart';
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -7,131 +11,58 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
-  Animation<double> buttonAnimation;
-
-  bool btnState = false;
-  bool login = false;
-
-  final textEmail = new TextEditingController();
-  final textPass = new TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    controller =
-        new AnimationController(duration: Duration(seconds: 2), vsync: this);
-    animation =
-        new CurvedAnimation(parent: controller, curve: Curves.bounceOut);
-    animation.addListener(() {
-      this.setState(() {});
-    });
-    animation.addStatusListener((AnimationStatus status) {
-      print("TESTING $status");
-      if (status == AnimationStatus.completed) {
-        btnState = true;
-      }
-    });
-    controller.forward();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(0.0),
       color: Colors.black26,
-      height: 170.0,
-      width: animation.value * 270.0,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              controller: textEmail,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(contentPadding: EdgeInsets.all(10.0),
-                  hintText: 'Email',
-                hintStyle: TextStyle(color: Colors.white30),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0)),
-              ),
+      height: 60.0,
+      width: 300.0,
+      child: FlatButton(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 8.0, bottom: 8.0, left: 0.0, right: 73.0),
+              child: new Image.asset('assets/Google-G.png'),
             ),
-          ),
-          Expanded(
-            child: TextField(
-              controller: textPass,
-              obscureText: true,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10.0),
-                  hintText: 'Passwords',
-                  hintStyle: TextStyle(color: Colors.white30),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderSide: BorderSide(width: 2.0,
-                          style: BorderStyle.solid,
-                          color: Colors.white))
-              ),
-
+            new Text(
+              'GOOGLE',
+              style: TextStyle(color: Colors.black54, fontSize: 12.0),
             ),
-          ),
-          Container(
-            height: 50.0,
-            width: animation.value * 200.0,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: btnState
-                        ? FlatButton(
-                            child: new Text(
-                              'SIGNUP',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPressed: () {
-                              print('Clicked');
-                            },
-                          )
-                        : Container(),
-                  ),
-                  Expanded(
-                    child: btnState
-                        ? FlatButton(
-                            child: new Text(
-                              'SIGNIN',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPressed: () {
-                              if (textEmail.text == 'admin' &&
-                                  textPass.text == 'admin') {
-                                Navigator.of(context).pushReplacementNamed(
-                                    MainLayout.tag);
-                              } else {
-                                print('Login Filed!');
-                              }
-                              //Navigator.of(context).pushReplacementNamed(MainLayout.tag);
-                            },
-                          )
-                        : Container(),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
+        onPressed: () {
+          Authentiction auth = new Authentiction();
+          auth.signIn().then((FirebaseUser user) =>
+              Navigator.of(context).pushReplacementNamed(MainLayout.tag));
+        },
       ),
     );
+  }
+}
+
+class Authentiction {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = new GoogleSignIn();
+
+  Future<FirebaseUser> signIn() async {
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
+
+    FirebaseUser user = await _auth.signInWithGoogle(
+        idToken: gSA.idToken, accessToken: gSA.accessToken);
+
+    print("User Name : ${user.displayName}");
+    return user;
+  }
+
+  Future<bool> isSignedIn() async {
+    return await googleSignIn.isSignedIn();
+  }
+
+  Future<FirebaseUser> getCurrentUser() async {
+    return await _auth.currentUser();
   }
 }

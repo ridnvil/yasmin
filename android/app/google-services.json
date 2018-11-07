@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "761270671720",
+    "firebase_url": "https://yasmin-967d6.firebaseio.com",
+    "project_id": "yasmin-967d6",
+    "storage_bucket": "yasmin-967d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:761270671720:android:860f4b9f2f14fd9c",
+        "android_client_info": {
+          "package_name": "com.subisakah.yasmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "761270671720-snd7ttaqja2iv84rklqehq6qtd09u8jn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.subisakah.yasmin",
+            "certificate_hash": "f23825113c763ae71d118416025b76f3a0a9bdb4"
+          }
+        },
+        {
+          "client_id": "761270671720-u1vgee2m8fjiiit1uo1cboutcqfgp6t4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUvKcE-4ScPt7oKQ___rQNzw8FQwg7Hdc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "761270671720-u1vgee2m8fjiiit1uo1cboutcqfgp6t4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

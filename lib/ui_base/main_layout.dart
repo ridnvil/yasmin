@@ -1,22 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:yasmin/ui_base/components/event_card.dart';
 import 'package:date_format/date_format.dart';
 
 class MainLayout extends StatefulWidget {
+  final FirebaseUser user;
   static final String tag = "/MAIN_LAYOUT";
+
+  const MainLayout({Key key, @required this.user}) :super(key: key);
 
   @override
   _MainLayoutState createState() => _MainLayoutState();
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  final _date = formatDate(new DateTime.now(), [
-    dd,
-    ' ',
-    MM,
-    ' ',
-    yyyy,
-  ]);
+  final _date = formatDate(new DateTime.now(), [dd, ' ', MM, ' ', yyyy,]);
 
   final List<String> titlearticle = ['one', 'two', 'three'];
 
@@ -105,14 +103,14 @@ class _MainLayoutState extends State<MainLayout> {
                                 icon: CircleAvatar(
                                   backgroundColor: Colors.white,
                                   backgroundImage: NetworkImage(
-                                      'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
+                                      widget.user.photoUrl),
                                 ),
                                 onPressed: () {
                                   print('Icon Button');
                                 },
                               ),
                               Padding(padding: EdgeInsets.only(bottom: 18.0)),
-                              Text('Hello, User',
+                              Text('Hello, ${widget.user.displayName}',
                                   style: TextStyle(
                                       fontSize: 28.0, color: Colors.white)),
                               Text(
@@ -171,17 +169,3 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 }
-
-//class CardAnimation extends AnimatedWidget{
-//  CardAnimation({Key key, Animation animation})
-//    : super(key: key, listenable: animation);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Center(
-//      child: Container(
-//        height: animation.value,
-//      ),
-//    );
-//  }
-//}

@@ -20,6 +20,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   date_format: ^1.0.5
+  firebase_auth:
+  google_sign_in:
+
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +41,7 @@ flutter:
     - assets/bg2.jpg
     - assets/bg3.jpg
     - assets/profile.png
+    - assets/Google-G.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
