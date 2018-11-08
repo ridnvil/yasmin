@@ -17,6 +17,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     return Column(
       children: <Widget>[
         Container(
+          height: 300.0,
+        ),
+        Container(
           padding: EdgeInsets.all(0.0),
           color: Colors.black26,
           height: 60.0,

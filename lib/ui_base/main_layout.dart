@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:yasmin/menu/userMain.dart';
 import 'package:yasmin/ui_base/components/event_card.dart';
 import 'package:date_format/date_format.dart';
 import 'package:yasmin/ui_base/components/login.dart';
@@ -8,7 +9,7 @@ class MainLayout extends StatefulWidget {
   final FirebaseUser user;
   static final String tag = "/MAIN_LAYOUT";
 
-  const MainLayout({Key key, this.user}) : super(key: key);
+  const MainLayout({Key key, @required this.user}) : super(key: key);
 
   @override
   _MainLayoutState createState() => _MainLayoutState();
@@ -23,7 +24,7 @@ class _MainLayoutState extends State<MainLayout> {
     yyyy,
   ]);
 
-  final List<String> titlearticle = ['one', 'two', 'three'];
+  final List<String> titlearticle = ['1'];
 
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
@@ -114,7 +115,10 @@ class _MainLayoutState extends State<MainLayout> {
                               NetworkImage(widget.user.photoUrl),
                             ),
                             onPressed: () {
-                              print('Icon Button');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => usermain()));
                             },
                           ),
                           Padding(padding: EdgeInsets.only(bottom: 18.0)),
@@ -122,9 +126,14 @@ class _MainLayoutState extends State<MainLayout> {
                               style: TextStyle(
                                   fontSize: 28.0, color: Colors.white)),
                           Text(
-                            'Birtdate : dd-mm-yyyy',
+                            'Birtdate : ${_date}',
                             style:
                                 TextStyle(fontSize: 15.0, color: Colors.white),
+                          ),
+                          Text(
+                            'Email : ${widget.user.email}',
+                            style:
+                            TextStyle(fontSize: 15.0, color: Colors.white),
                           ),
                           Text(
                             'DNM : 280',
@@ -149,15 +158,18 @@ class _MainLayoutState extends State<MainLayout> {
                     ),
                     Container(
                       height: 300.0,
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(left: 16.0),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: titlearticle.length,
-                        itemBuilder: (context, index) {
-                          return EventCard();
-                        },
-                      ),
+                      child: EventCard(),
                     ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 25.0, bottom: 10.0, top: 10.0, right: 25.0),
+                      child: new Row(
+                        children: <Widget>[
+                          new Text('Today : ${_date}',
+                              style: TextStyle(color: Colors.white))
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ],

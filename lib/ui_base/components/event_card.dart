@@ -9,6 +9,7 @@ import 'package:yasmin/menu/scedule.dart';
 import 'package:yasmin/menu/tablestanding.dart';
 import 'package:yasmin/menu/tablestandingclub.dart';
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:yasmin/menu/timer_page.dart';
 import 'package:yasmin/ui_base/components/login.dart';
@@ -21,63 +22,13 @@ class EventCard extends StatefulWidget {
 class _EventCardState extends State<EventCard> {
   var _date = formatDate(new DateTime.now(), [dd, '/', mm, '/', yyyy]);
 
+  Firestore database = new Firestore();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       //padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
       width: 250.0,
-      child: FlatButton(
-        padding: EdgeInsets.all(5.0),
-        child: Material(
-          elevation: 2.0,
-          borderRadius: BorderRadius.circular(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: new BorderRadius.only(
-                    topLeft: Radius.circular(8.0),
-                    topRight: Radius.circular(8.0),
-                  ),
-                  child: Image.asset(
-                    'assets/bg3.jpg',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('Post Date : ${_date}'),
-                    Padding(padding: EdgeInsets.only(bottom: 5.0)),
-                    Text(
-                      'Article Title',
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 26.0),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Padding(padding: EdgeInsets.only(bottom: 5.0)),
-                    Container(
-                      width: 80.0,
-                      height: 5.0,
-                      child: Material(
-                        color: Colors.green,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => articleView()));
-        },
-      ),
     );
   }
 }
@@ -88,66 +39,99 @@ class reportCard extends StatefulWidget {
 }
 
 class _reportCardState extends State<reportCard> {
-  var play, win, lose;
-
-  @override
-  void initState() {
-    super.initState();
-    play = 3;
-    win = 3;
-    lose = 0;
+  Future getArticles() async {
+    var firestore = Firestore.instance;
+    QuerySnapshot qs = await firestore.collection("articles").getDocuments();
+    return qs.documents;
   }
 
   @override
   Widget build(BuildContext context) {
     //print(_play[1]);
     return Container(
-      color: Colors.transparent,
-      //padding: EdgeInsets.all(10.0),
-      width: 350.0,
-      child: Material(
-        color: Colors.transparent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                    child: Text('PLAY',
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center)),
-                Expanded(
-                    child: Text('WIN',
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center)),
-                Expanded(
-                    child: Text('LOSE',
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center))
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Text('${play}',
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center)),
-                  Expanded(
-                      child: Text('${win}',
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center)),
-                  Expanded(
-                      child: Text('${lose}',
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center))
-                ],
-              ),
-            )
-          ],
-        ),
+      child: FutureBuilder(
+        future: getArticles(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Material(
+                child: new Text('Data not Found'),
+              );
+            case ConnectionState.waiting:
+              return new Material(
+                child: new Text('Loading...'),
+              );
+            default:
+              if (snapshot.hasError) {
+                return new Material();
+              } else {
+                return new ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, index) {
+                    return new FlatButton(
+                      padding: EdgeInsets.all(5.0),
+                      child: Material(
+                        elevation: 2.0,
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: new BorderRadius.only(
+                                  topLeft: Radius.circular(8.0),
+                                  topRight: Radius.circular(8.0),
+                                ),
+                                child: Image.network(
+                                  snapshot.data[index].data["photoUrl"],
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(
+                                  left: 20.0, top: 20.0, bottom: 20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                      'Post Date : ${snapshot.data[index]
+                                          .data["postdate"]}'),
+                                  Padding(
+                                      padding: EdgeInsets.only(bottom: 5.0)),
+                                  Text(
+                                    snapshot.data[index].data["title"],
+                                    maxLines: 1,
+                                    style: TextStyle(fontSize: 26.0),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(bottom: 5.0)),
+                                  Container(
+                                    width: 80.0,
+                                    height: 5.0,
+                                    child: Material(
+                                      color: Colors.green,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => articleView()));
+                      },
+                    );
+                  },
+                );
+              }
+          }
+        },
       ),
     );
   }
