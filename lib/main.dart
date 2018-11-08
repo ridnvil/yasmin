@@ -21,8 +21,8 @@ Future<void> main() async {
     home: isSignedIn ? MainLayout(user: user) : LoginLayout(),
     initialRoute: '/',
     routes: {
-      LoginLayout.tag: (ctx) => LoginLayout(),
       MainLayout.tag: (ctx) => MainLayout(user: user),
+      LoginLayout.tag: (ctx) => LoginLayout(),
     },
   ));
 }

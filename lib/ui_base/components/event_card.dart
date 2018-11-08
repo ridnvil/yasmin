@@ -154,18 +154,17 @@ class _reportCardState extends State<reportCard> {
 }
 
 class drawerMenu extends StatefulWidget {
-  final String displayName, photoUrl;
-
-  const drawerMenu(
-      {Key key, @required this.displayName = 'Rid Nvil', this.photoUrl = ''})
-      : super(key: key);
-
   @override
   _drawerMenuState createState() => _drawerMenuState();
 }
 
 class _drawerMenuState extends State<drawerMenu> {
+  Future<UserInfo> getData() async {
+    Authentiction auth = new Authentiction();
+    FirebaseUser user = await auth.getCurrentUser();
 
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,38 +183,52 @@ class _drawerMenuState extends State<drawerMenu> {
       ),
       child: ListView(
         children: <Widget>[
+          Divider(
+            color: Colors.white,
+          ),
           Container(
             padding: EdgeInsets.all(5.0),
             child: Column(
               children: <Widget>[
-                Divider(
-                  color: Colors.white,
-                ),
                 Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 0.0),
-                    child: FlatButton(
-                      padding: EdgeInsets.all(10.0),
-                      child: Row(
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(widget.photoUrl),
-                            backgroundColor: Colors.white,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(widget.displayName,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15.0)),
-                          )
-                        ],
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => profile()));
-                      },
-                    ),
+                  child: new FutureBuilder<UserInfo>(
+                    future: getData(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return new Row();
+                        case ConnectionState.waiting:
+                          return new Row();
+                        default:
+                          if (snapshot.hasError) {} else {
+                            return GestureDetector(
+                              child: Row(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    backgroundImage:
+                                    NetworkImage(snapshot.data.photoUrl),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(snapshot.data.displayName,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15.0)),
+                                  )
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => profile()));
+                              },
+                            );
+                          }
+                      }
+                    },
                   ),
                 ),
                 Divider(

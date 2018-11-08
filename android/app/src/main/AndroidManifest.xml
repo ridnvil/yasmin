@@ -15,6 +15,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="yasmin"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

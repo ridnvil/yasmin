@@ -22,7 +22,6 @@ dependencies:
   date_format: ^1.0.5
   firebase_auth:
   google_sign_in:
-  flutter_facebook_login:
 
 
 dev_dependencies:
