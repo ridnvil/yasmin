@@ -152,13 +152,13 @@ class _MainLayoutState extends State<MainLayout> {
                                 style: TextStyle(
                                     fontSize: 15.0, color: Colors.white),
                               )),
-                          reportCard()
                         ],
                       ),
                     ),
                     Container(
+                      color: Colors.white,
                       height: 300.0,
-                      child: EventCard(),
+                      child: reportCard(),
                     ),
                     Container(
                       padding: EdgeInsets.only(

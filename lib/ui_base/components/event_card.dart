@@ -22,13 +22,11 @@ class EventCard extends StatefulWidget {
 class _EventCardState extends State<EventCard> {
   var _date = formatDate(new DateTime.now(), [dd, '/', mm, '/', yyyy]);
 
-  Firestore database = new Firestore();
-
   @override
   Widget build(BuildContext context) {
     return Container(
       //padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
-      width: 250.0,
+
     );
   }
 }
@@ -39,6 +37,7 @@ class reportCard extends StatefulWidget {
 }
 
 class _reportCardState extends State<reportCard> {
+
   Future getArticles() async {
     var firestore = Firestore.instance;
     QuerySnapshot qs = await firestore.collection("articles").getDocuments();
@@ -49,9 +48,10 @@ class _reportCardState extends State<reportCard> {
   Widget build(BuildContext context) {
     //print(_play[1]);
     return Container(
+      width: 250.0,
       child: FutureBuilder(
         future: getArticles(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (BuildContext contex, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
               return new Material(
@@ -63,11 +63,13 @@ class _reportCardState extends State<reportCard> {
               );
             default:
               if (snapshot.hasError) {
-                return new Material();
+                return new Material(
+                  child: new Text('error'),
+                );
               } else {
                 return new ListView.builder(
                   itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, index) {
+                  itemBuilder: (BuildContext contex, index) {
                     return new FlatButton(
                       padding: EdgeInsets.all(5.0),
                       child: Material(
@@ -143,10 +145,9 @@ class drawerMenu extends StatefulWidget {
 }
 
 class _drawerMenuState extends State<drawerMenu> {
-  Future<UserInfo> getData() async {
+  Future getData() async {
     Authentiction auth = new Authentiction();
     FirebaseUser user = await auth.getCurrentUser();
-
     return user;
   }
 
@@ -175,7 +176,7 @@ class _drawerMenuState extends State<drawerMenu> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: new FutureBuilder<UserInfo>(
+                  child: new FutureBuilder(
                     future: getData(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
