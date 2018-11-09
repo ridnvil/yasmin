@@ -25,116 +25,7 @@ class _EventCardState extends State<EventCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
-
-    );
-  }
-}
-
-class reportCard extends StatefulWidget {
-  @override
-  _reportCardState createState() => _reportCardState();
-}
-
-class _reportCardState extends State<reportCard> {
-
-  Future getArticles() async {
-    var firestore = Firestore.instance;
-    QuerySnapshot qs = await firestore.collection("articles").getDocuments();
-    return qs.documents;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //print(_play[1]);
-    return Container(
-      width: 250.0,
-      child: FutureBuilder(
-        future: getArticles(),
-        builder: (BuildContext contex, AsyncSnapshot snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return new Material(
-                child: new Text('Data not Found'),
-              );
-            case ConnectionState.waiting:
-              return new Material(
-                child: new Text('Loading...'),
-              );
-            default:
-              if (snapshot.hasError) {
-                return new Material(
-                  child: new Text('error'),
-                );
-              } else {
-                return new ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext contex, index) {
-                    return new FlatButton(
-                      padding: EdgeInsets.all(5.0),
-                      child: Material(
-                        elevation: 2.0,
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: new BorderRadius.only(
-                                  topLeft: Radius.circular(8.0),
-                                  topRight: Radius.circular(8.0),
-                                ),
-                                child: Image.network(
-                                  snapshot.data[index].data["photoUrl"],
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  left: 20.0, top: 20.0, bottom: 20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                      'Post Date : ${snapshot.data[index]
-                                          .data["postdate"]}'),
-                                  Padding(
-                                      padding: EdgeInsets.only(bottom: 5.0)),
-                                  Text(
-                                    snapshot.data[index].data["title"],
-                                    maxLines: 1,
-                                    style: TextStyle(fontSize: 26.0),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Padding(
-                                      padding: EdgeInsets.only(bottom: 5.0)),
-                                  Container(
-                                    width: 80.0,
-                                    height: 5.0,
-                                    child: Material(
-                                      color: Colors.green,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => articleView()));
-                      },
-                    );
-                  },
-                );
-              }
-          }
-        },
-      ),
+      padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
     );
   }
 }
@@ -145,10 +36,16 @@ class drawerMenu extends StatefulWidget {
 }
 
 class _drawerMenuState extends State<drawerMenu> {
+  Authentiction au = new Authentiction();
+
   Future getData() async {
     Authentiction auth = new Authentiction();
     FirebaseUser user = await auth.getCurrentUser();
     return user;
+  }
+
+  void signOut() {
+    au.googleSignIn.signOut();
   }
 
   @override
@@ -200,6 +97,37 @@ class _drawerMenuState extends State<drawerMenu> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 15.0)),
+                                  ),
+                                  Expanded(
+                                    child: FlatButton(
+                                        padding: EdgeInsets.only(left: 80.0),
+                                        child: Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 0.0),
+                                                child: Text('Logout',
+                                                  style: TextStyle(
+                                                      color: Colors.white),),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(
+                                                    8.0),
+                                                child: Icon(
+                                                  Icons.exit_to_app,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          Authentiction auth = new Authentiction();
+                                          FirebaseUser user = await auth
+                                              .getCurrentUser();
+                                        }
+                                    ),
                                   )
                                 ],
                               ),
