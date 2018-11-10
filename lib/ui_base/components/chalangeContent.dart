@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'package:yasmin/ui_base/components/login.dart';
 
 class bettleChalane extends StatefulWidget {
   bettleChalane({Key key}) : super(key: key);
@@ -57,6 +59,12 @@ class _bettleChalaneState extends State<bettleChalane> {
     return "$minutesStr:$secondsStr:$hundredsStr";
   }
 
+  Future<UserInfo> getUser() async {
+    Authentiction auth = new Authentiction();
+    FirebaseUser user = await auth.getCurrentUser();
+    return user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,17 +81,51 @@ class _bettleChalaneState extends State<bettleChalane> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: CircleAvatar(
-                          maxRadius: 35.0,
-                          backgroundImage: NetworkImage(
-                              'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
-                          backgroundColor: Colors.white,
+                        child: FutureBuilder<UserInfo>(
+                          future: getUser(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                                return new CircleAvatar();
+                              case ConnectionState.waiting:
+                                return new CircleAvatar();
+                              default:
+                                if (snapshot.hasError) {
+                                  return new CircleAvatar();
+                                } else {
+                                  return new CircleAvatar(
+                                    maxRadius: 35.0,
+                                    backgroundImage:
+                                    NetworkImage(snapshot.data.photoUrl),
+                                    backgroundColor: Colors.white,
+                                  );
+                                }
+                            }
+                          },
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('Atlet Names',
-                            style: TextStyle(color: Colors.white)),
+                        child: FutureBuilder<UserInfo>(
+                          future: getUser(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                                return new CircleAvatar();
+                              case ConnectionState.waiting:
+                                return new CircleAvatar();
+                              default:
+                                if (snapshot.hasError) {
+                                  return new CircleAvatar();
+                                } else {
+                                  return new Text(snapshot.data.displayName,
+                                      style: TextStyle(color: Colors.white));
+                                }
+                            }
+                          },
+                        ),
                       )
                     ],
                   ),
@@ -105,11 +147,16 @@ class _bettleChalaneState extends State<bettleChalane> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: CircleAvatar(
-                          maxRadius: 35.0,
-                          backgroundImage: NetworkImage(
-                              'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
-                          backgroundColor: Colors.white,
+                        child: GestureDetector(
+                          child: CircleAvatar(
+                            maxRadius: 35.0,
+                            backgroundImage: NetworkImage(
+                                'https://cdn3.iconfinder.com/data/icons/business-and-finance-icons/512/Business_Man-512.png'),
+                            backgroundColor: Colors.white,
+                          ),
+                          onTap: () {
+                            print('Change User');
+                          },
                         ),
                       ),
                       Padding(
@@ -165,6 +212,21 @@ class _bettleChalaneState extends State<bettleChalane> {
           )
         ],
       ),
+    );
+  }
+}
+
+
+class atletEnemi extends StatefulWidget {
+  @override
+  _atletEnemiState createState() => _atletEnemiState();
+}
+
+class _atletEnemiState extends State<atletEnemi> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+
     );
   }
 }

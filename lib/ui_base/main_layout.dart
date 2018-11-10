@@ -23,7 +23,6 @@ class _MainLayoutState extends State<MainLayout> {
   Future<Widget> refreshPage() async {
     refreshKey.currentState?.show();
     await Future.delayed(Duration(seconds: 2));
-    getUser();
   }
 
   Future<UserInfo> getUser() async {
@@ -55,92 +54,102 @@ class _MainLayoutState extends State<MainLayout> {
             color: Colors.black54,
             colorBlendMode: BlendMode.darken,
           ),
-          RefreshIndicator(
-            notificationPredicate: defaultScrollNotificationPredicate,
-            child: ListView(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      height: 80.0,
-                      child: AppBar(
-                        elevation: 0.0,
-                        backgroundColor: Colors.transparent,
-                        leading: IconButton(
-                          icon: Icon(Icons.sort),
-                          onPressed: () => _drawer.currentState.openDrawer(),
+          ListView(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: 80.0,
+                    child: AppBar(
+                      elevation: 0.0,
+                      backgroundColor: Colors.transparent,
+                      leading: IconButton(
+                        icon: Icon(Icons.sort),
+                        onPressed: () => _drawer.currentState.openDrawer(),
+                      ),
+                      title: Center(child: Text('PTMSI')),
+                      actions: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.info),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              child: AlertDialog(
+                                title: new Text('About US'),
+                                content: new Text('Demo Version..!'),
+                              ),
+                            );
+                          },
                         ),
-                        title: Center(child: Text('PTMSI')),
-                        actions: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.search),
-                            onPressed: () {
-                              print(formatDate(
-                                  new DateTime.now(), [dd, '-', M, '-', yyyy]));
-                            },
-                          ),
-                          Padding(padding: EdgeInsets.only(right: 4.0))
-                        ],
-                      ),
+                        Padding(padding: EdgeInsets.only(right: 4.0))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.only(left: 40.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          IconButton(
-                            padding: EdgeInsets.all(0.0),
-                            iconSize: 50.0,
-                            icon: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              backgroundImage:
-                              NetworkImage(widget.user.photoUrl),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => usermain()));
-                            },
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 18.0)),
-                          Text('Hello, ${widget.user.displayName}',
-                              style: TextStyle(
-                                  fontSize: 28.0, color: Colors.white)),
-                          Text(
-                            widget.user.email,
-                            style:
-                            TextStyle(fontSize: 15.0, color: Colors.white),
-                          ),
-                        ],
-                      ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 40.0),
+                    child: FutureBuilder(
+                      future: getUser(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return new Column();
+                          case ConnectionState.waiting:
+                            return new Column();
+                          default:
+                            if (snapshot.hasError) {
+                              return new Column();
+                            } else {
+                              return new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  IconButton(
+                                    padding: EdgeInsets.all(0.0),
+                                    iconSize: 50.0,
+                                    icon: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      backgroundImage:
+                                      NetworkImage(snapshot.data.photoUrl),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  usermain()));
+                                    },
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(bottom: 18.0)),
+                                  Text('Hello, ${snapshot.data.displayName}',
+                                      style: TextStyle(
+                                          fontSize: 28.0, color: Colors.white)),
+                                  Text(
+                                    snapshot.data.email,
+                                    style: TextStyle(
+                                        fontSize: 15.0, color: Colors.white),
+                                  ),
+                                ],
+                              );
+                            }
+                        }
+                      },
                     ),
-                    Container(
-                      height: 300.0,
-                      padding: EdgeInsets.only(top: 20.0),
-                      child: ArticlesList(),
-                    ),
-                    Container(
-                      color: Colors.white70,
-                      alignment: Alignment(1, 2),
-                      padding: EdgeInsets.all(5.0),
-                      height: 50.0,
-                      child: FloatingActionButton(
-                        elevation: 5.0,
-                        child: Icon(Icons.add),
-                        onPressed: () {
-                          print('Insert Article');
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            onRefresh: refreshPage,
+                  ),
+                  Container(
+                    height: 300.0,
+                    padding: EdgeInsets.only(top: 20.0),
+                    child: ArticlesList(),
+                  ),
+                ],
+              ),
+            ],
           ),
         ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
       ),
     );
   }
@@ -252,10 +261,8 @@ class uploadArticle extends StatefulWidget {
 }
 
 class _uploadArticleState extends State<uploadArticle> {
-
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return StreamBuilder();
   }
 }
-

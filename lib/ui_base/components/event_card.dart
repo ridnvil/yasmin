@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:yasmin/menu/timer_page.dart';
 import 'package:yasmin/ui_base/components/login.dart';
+import 'package:yasmin/ui_base/login_layout.dart';
 
 class EventCard extends StatefulWidget {
   @override
@@ -36,16 +37,16 @@ class drawerMenu extends StatefulWidget {
 }
 
 class _drawerMenuState extends State<drawerMenu> {
-  Authentiction au = new Authentiction();
+  Authentiction auth = new Authentiction();
 
-  Future getData() async {
+  Future<UserInfo> getData() async {
     Authentiction auth = new Authentiction();
     FirebaseUser user = await auth.getCurrentUser();
     return user;
   }
 
   void signOut() {
-    au.googleSignIn.signOut();
+    auth.googleSignIn.signOut();
   }
 
   @override
@@ -73,7 +74,7 @@ class _drawerMenuState extends State<drawerMenu> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: new FutureBuilder(
+                  child: new FutureBuilder<UserInfo>(
                     future: getData(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
@@ -99,35 +100,41 @@ class _drawerMenuState extends State<drawerMenu> {
                                             fontSize: 15.0)),
                                   ),
                                   Expanded(
-                                    child: FlatButton(
-                                        padding: EdgeInsets.only(left: 80.0),
+                                    child: GestureDetector(
                                         child: Container(
-                                          child: Row(
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 0.0),
-                                                child: Text('Logout',
-                                                  style: TextStyle(
-                                                      color: Colors.white),),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(
-                                                    8.0),
-                                                child: Icon(
-                                                  Icons.exit_to_app,
-                                                  color: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 80.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding:
+                                                  const EdgeInsets.only(
+                                                      right: 0.0),
+                                                  child: Text(
+                                                    'Logout',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                                Padding(
+                                                  padding:
+                                                  const EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                    Icons.exit_to_app,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                        onPressed: () async {
-                                          Authentiction auth = new Authentiction();
-                                          FirebaseUser user = await auth
-                                              .getCurrentUser();
-                                        }
-                                    ),
+                                        onTap: () {
+                                          signOut();
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                              LoginLayout.tag);
+                                        }),
                                   )
                                 ],
                               ),
