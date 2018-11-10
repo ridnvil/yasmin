@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:yasmin/ui_base/components/event_card.dart';
 import '../main_layout.dart';
@@ -41,8 +42,15 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
             onPressed: () {
               Authentiction auth = new Authentiction();
-              auth.signIn().then((FirebaseUser user) =>
-                  Navigator.of(context).pushReplacementNamed(MainLayout.tag));
+              auth.signIn().then((FirebaseUser user) async {
+                var userData = await auth.getUser(user.uid);
+                if (!userData.exists) {
+                  await auth.addNewUser(user);
+                } else {
+                  await Navigator.of(context).pushReplacementNamed(
+                      MainLayout.tag);
+                }
+              });
             },
           ),
         ),
@@ -72,5 +80,33 @@ class Authentiction {
 
   Future<FirebaseUser> getCurrentUser() async {
     return await _auth.currentUser();
+  }
+
+  Future<DocumentSnapshot> getUser(String uid) async {
+    return await Firestore.instance.collection('users').document(uid).get();
+  }
+
+  Future addNewUser(FirebaseUser user) async {
+    await Firestore.instance.collection('users')
+        .document(user.uid)
+        .setData(<String, dynamic>{
+      "name": user.displayName,
+      "email": user.email,
+      "photo_url": user.photoUrl,
+      "created_at": DateTime.now(),
+    });
+  }
+
+  Future addArticle(FirebaseUser user, String title, String postdate,
+      String postby, String photoUrl, String content) async {
+    await Firestore.instance.collection('articles')
+        .document(user.uid)
+        .setData(<String, dynamic>{
+      "title": title,
+      "postdate": postdate,
+      "postby": user.displayName,
+      "photoUrl": photoUrl,
+      "content": content,
+    });
   }
 }

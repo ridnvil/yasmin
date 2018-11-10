@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:yasmin/menu/userMain.dart';
 import 'package:yasmin/ui_base/components/event_card.dart';
 import 'package:date_format/date_format.dart';
 import 'package:yasmin/ui_base/components/login.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MainLayout extends StatefulWidget {
   final FirebaseUser user;
@@ -19,6 +22,7 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
+  File _image;
 
   Future<Widget> refreshPage() async {
     refreshKey.currentState?.show();
@@ -31,7 +35,13 @@ class _MainLayoutState extends State<MainLayout> {
     return user;
   }
 
-  final List<ArticlesList> article = [];
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   GlobalKey<ScaffoldState> _drawer = new GlobalKey<ScaffoldState>();
 
@@ -149,7 +159,78 @@ class _MainLayoutState extends State<MainLayout> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+              context: context,
+              child: AlertDialog(
+                title: new Text('Posting Article'),
+                content: Container(
+                  height: 500.0,
+                  width: 300.0,
+                  child: ListView(
+                    children: <Widget>[
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            Material(
+                              color: Colors.blue,
+                              child: Container(
+                                child: GestureDetector(
+                                  child: new Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
+                                      children: <Widget>[
+                                        _image == null
+                                            ? new Text(
+                                          'Upload Gambar',
+                                          style: TextStyle(
+                                              color: Colors.white),
+                                        )
+                                            : new Image.file(
+                                            _image, fit: BoxFit.cover),
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    await getImage();
+                                  },
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: new TextField(
+                                  decoration: InputDecoration(
+                                      hintText: 'Judul Article')),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: new TextFormField(
+                                decoration: InputDecoration(
+                                    contentPadding:
+                                    EdgeInsets.symmetric(vertical: 50.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(width: 1.0)),
+                                    hintText: 'Article'),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: FlatButton(
+                          color: Colors.blue,
+                          child: new Text('Posting',
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {},
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ));
+        },
       ),
     );
   }

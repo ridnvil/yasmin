@@ -18,7 +18,6 @@ class _bettleChalaneState extends State<bettleChalane> {
 
   String elapsedTime = '';
 
-  @override
   updateTime(Timer timers) {
     setState(() {
       elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
@@ -113,12 +112,15 @@ class _bettleChalaneState extends State<bettleChalane> {
                               (BuildContext context, AsyncSnapshot snapshot) {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
-                                return new CircleAvatar();
+                                return new Text('Name Not Found',
+                                    style: TextStyle(color: Colors.white));
                               case ConnectionState.waiting:
-                                return new CircleAvatar();
+                                return new Text('load name..',
+                                    style: TextStyle(color: Colors.white));
                               default:
                                 if (snapshot.hasError) {
-                                  return new CircleAvatar();
+                                  return new Text('Load Errors',
+                                      style: TextStyle(color: Colors.white));
                                 } else {
                                   return new Text(snapshot.data.displayName,
                                       style: TextStyle(color: Colors.white));
