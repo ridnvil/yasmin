@@ -12,7 +12,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,10 +45,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 var userData = await auth.getUser(user.uid);
                 if (!userData.exists) {
                   await auth.addNewUser(user);
-                } else {
-                  await Navigator.of(context).pushReplacementNamed(
-                      MainLayout.tag);
                 }
+              }).whenComplete(() {
+                Navigator.of(context)
+                    .pushReplacementNamed(MainLayout.tag);
               });
             },
           ),
@@ -87,7 +86,8 @@ class Authentiction {
   }
 
   Future addNewUser(FirebaseUser user) async {
-    await Firestore.instance.collection('users')
+    await Firestore.instance
+        .collection('users')
         .document(user.uid)
         .setData(<String, dynamic>{
       "name": user.displayName,
@@ -99,7 +99,8 @@ class Authentiction {
 
   Future addArticle(FirebaseUser user, String title, String postdate,
       String postby, String photoUrl, String content) async {
-    await Firestore.instance.collection('articles')
+    await Firestore.instance
+        .collection('articles')
         .document(user.uid)
         .setData(<String, dynamic>{
       "title": title,
