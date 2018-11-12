@@ -127,7 +127,7 @@ class _AddArticleState extends State<AddArticle> {
           IconButton(
             icon: new Icon(Icons.add_a_photo),
             onPressed: () async {
-              
+              getImage();
             },
           )
         ],
