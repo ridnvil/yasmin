@@ -344,6 +344,9 @@ class uploadArticle extends StatefulWidget {
 class _uploadArticleState extends State<uploadArticle> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder();
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        
+      });
   }
 }
