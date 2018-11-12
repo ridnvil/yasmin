@@ -35,14 +35,6 @@ class _MainLayoutState extends State<MainLayout> {
     return user;
   }
 
-  Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
   GlobalKey<ScaffoldState> _drawer = new GlobalKey<ScaffoldState>();
 
   @override
@@ -119,7 +111,7 @@ class _MainLayoutState extends State<MainLayout> {
                                     icon: CircleAvatar(
                                       backgroundColor: Colors.white,
                                       backgroundImage:
-                                      NetworkImage(snapshot.data.photoUrl),
+                                          NetworkImage(snapshot.data.photoUrl),
                                     ),
                                     onPressed: () {
                                       Navigator.push(
@@ -160,76 +152,8 @@ class _MainLayoutState extends State<MainLayout> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          showDialog(
-              context: context,
-              child: AlertDialog(
-                title: new Text('Posting Article'),
-                content: Container(
-                  height: 500.0,
-                  width: 300.0,
-                  child: ListView(
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          children: <Widget>[
-                            Material(
-                              color: Colors.blue,
-                              child: Container(
-                                child: GestureDetector(
-                                  child: new Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .center,
-                                      children: <Widget>[
-                                        _image == null
-                                            ? new Text(
-                                          'Upload Gambar',
-                                          style: TextStyle(
-                                              color: Colors.white),
-                                        )
-                                            : new Image.file(
-                                            _image, fit: BoxFit.cover),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    await getImage();
-                                  },
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: new TextField(
-                                  decoration: InputDecoration(
-                                      hintText: 'Judul Article')),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: new TextFormField(
-                                decoration: InputDecoration(
-                                    contentPadding:
-                                    EdgeInsets.symmetric(vertical: 50.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(width: 1.0)),
-                                    hintText: 'Article'),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: FlatButton(
-                          color: Colors.blue,
-                          child: new Text('Posting',
-                              style: TextStyle(color: Colors.white)),
-                          onPressed: () {},
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddArticle()));
         },
       ),
     );
@@ -259,7 +183,7 @@ class _ArticlesListState extends State<ArticlesList> {
             return new ListView(
               scrollDirection: Axis.horizontal,
               children:
-              snapshot.data.documents.map((DocumentSnapshot document) {
+                  snapshot.data.documents.map((DocumentSnapshot document) {
                 return Container(
                   padding: EdgeInsets.only(
                       left: 0.0, right: 0.0, bottom: 10.0, top: 10.0),
@@ -318,8 +242,7 @@ class _ArticlesListState extends State<ArticlesList> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  articleView(
+                              builder: (context) => ArticleView(
                                     photoUrl: document['photoUrl'],
                                     title: document['title'],
                                     postdate: document['postdate'],
@@ -333,20 +256,5 @@ class _ArticlesListState extends State<ArticlesList> {
         }
       },
     );
-  }
-}
-
-class uploadArticle extends StatefulWidget {
-  @override
-  _uploadArticleState createState() => _uploadArticleState();
-}
-
-class _uploadArticleState extends State<uploadArticle> {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        
-      });
   }
 }
