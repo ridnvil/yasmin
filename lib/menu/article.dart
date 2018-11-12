@@ -80,7 +80,6 @@ class _ArticleViewState extends State<ArticleView> {
 }
 
 class AddArticle extends StatefulWidget {
-
   @override
   _AddArticleState createState() => _AddArticleState();
 }
@@ -92,7 +91,8 @@ class _AddArticleState extends State<AddArticle> {
 
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController articleController = new TextEditingController();
-  final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://yasmin-967d6.appspot.com');
+  final FirebaseStorage storage = FirebaseStorage(
+      storageBucket: 'gs://yasmin-967d6.appspot.com/articlePictures');
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -102,12 +102,25 @@ class _AddArticleState extends State<AddArticle> {
     });
   }
 
-  Future getData(String title, String article) async {
+  Future<bool> getData(String title, String article) async {
     setState(() {
       this._title = title;
       this._articles = article;
     });
   }
+
+  Future<bool> uploadPicture(File img, String titleimg) async {
+    final StorageReference firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('/articlePictures/${this.titleController.text}.jpg');
+    final StorageUploadTask task = firebaseStorageRef.putFile(_image);
+
+    return task.isSuccessful;
+  }
+
+  
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +130,8 @@ class _AddArticleState extends State<AddArticle> {
         actions: <Widget>[
           IconButton(
             icon: new Icon(Icons.add_a_photo),
-            onPressed: () async{
-              getImage();
+            onPressed: () async {
+              
             },
           )
         ],
@@ -140,6 +153,14 @@ class _AddArticleState extends State<AddArticle> {
                           padding: EdgeInsets.all(10.0),
                           child: Column(
                             children: <Widget>[
+                              new Container(
+                                child: new FlatButton(
+                                  child: new Text('Upload'),
+                                  onPressed: () {
+                                    
+                                  },
+                                ),
+                              ),
                               new TextField(
                                 controller: titleController,
                                 decoration: new InputDecoration(
