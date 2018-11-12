@@ -118,10 +118,6 @@ class _AddArticleState extends State<AddArticle> {
     return task.isSuccessful;
   }
 
-  
-
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
