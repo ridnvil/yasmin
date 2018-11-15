@@ -228,7 +228,9 @@ class _atletEnemiState extends State<atletEnemi> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        
+      },
     );
   }
 }
